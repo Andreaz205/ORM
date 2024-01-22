@@ -50,8 +50,19 @@ class DatabaseTest
             'SELECT name FROM users WHERE `user_id` IN (1, 2, 3) AND block = 1',
         ];
 
-        if ($results !== $correct) {
-            throw new Exception('Failure.');
+        $this->checkCorrect($results, $correct);
+    }
+
+    private function checkCorrect(array $result, array $correct): void
+    {
+        if (count($result) !== count($correct))
+            throw new Exception("Некорректная работа builder`a. Массивы разной длины");
+
+        foreach ($result as $key => $resultSentence) {
+            if ($resultSentence !== $correct[$key]) {
+                var_dump($result);
+                throw new Exception("Некорректная работа builder`a. Строка -> $resultSentence оргинал $correct[$key]");
+            }
         }
     }
 }
